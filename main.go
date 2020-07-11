@@ -25,8 +25,8 @@ func main() {
 	// TODO get port from env var
 	port := 54321
 	// TODO use real UDP server as CmdServer
-	mockHandler := service.CreateMock()
-	mockServer := server.CreateMock(mockHandler)
+	mockCmdService := service.CreateMock()
+	mockServer := server.CreateMock(mockCmdService)
 	log.Println("INFO: server: ", mockServer)
 	mockServer.Listen(port)
 }
