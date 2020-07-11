@@ -10,6 +10,8 @@ import (
 )
 
 func main() {
+	// TODO replace fmt with proper abstraction (UIService)
+	fmt.Println("Welcome to Emoji UDP Server!")
 	isRaw := flag.Bool("r", false, "disable the translation from keyword to emoji")
 	n := flag.Int("n", 1, "cmd input number multiplier")
 	sep := flag.String("s", "", "emojis separator")
@@ -19,11 +21,12 @@ func main() {
 	if err != nil {
 		log.Panicln("ERR: Could not create Config struct from command-line arguments, got error: ", err)
 	}
-	fmt.Println("Welcome to Emoji UDP Server!")
 	log.Println("INFO: Config: ", conf)
-
+	// TODO get port from env var
+	port := 54321
 	// TODO use real UDP server as CmdServer
 	mockHandler := service.CreateMock()
 	mockServer := server.CreateMock(mockHandler)
 	log.Println("INFO: server: ", mockServer)
+	mockServer.Listen(port)
 }
