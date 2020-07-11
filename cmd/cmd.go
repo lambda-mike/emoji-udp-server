@@ -6,17 +6,26 @@ import (
 	"log"
 )
 
-type Parser struct{}
+type parser struct{}
 
-func (p *Parser) Parse(cmd string) (contracts.Cmd, error) {
+func (p *parser) Parse(cmd string) (contracts.Cmd, error) {
 	return contracts.Cmd{}, errors.New("TODO Parse Cmd")
 }
 
-type Multiplyer struct{}
+type multiplier struct {
+	n int
+}
 
-func (p *Multiplyer) Transform(cmd contracts.Cmd) contracts.Cmd {
+func (p *multiplier) Transform(cmd contracts.Cmd) contracts.Cmd {
 	// TODO
 	return cmd
+}
+
+func CreateMultiplier(n int) contracts.CmdTransformer {
+	log.Println("INFO cmd.CreateResponseBuilder")
+	m := multiplier{}
+	m.n = n
+	return &m
 }
 
 type IdentityTranslator struct{}
@@ -40,6 +49,6 @@ func CreateResponseBuilder(
 	t contracts.CmdTransformer,
 ) contracts.CmdResponseBuilder {
 	// TODO
-	log.Println("cmd.CreateResponseBuilder")
+	log.Println("INFO cmd.CreateResponseBuilder")
 	return nil
 }
