@@ -16,3 +16,12 @@ type CmdServer interface {
 type CmdParser interface {
 	Parse(cmd string) (Cmd, error)
 }
+
+type CmdTransformer interface {
+	Transform(cmd Cmd) Cmd
+	// TODO Chain
+}
+
+type CmdResponseBuilder interface {
+	Build(cmd Cmd) (string, error)
+}
