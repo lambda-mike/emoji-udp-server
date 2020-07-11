@@ -5,14 +5,22 @@ import (
 	"github.com/emoji-udp-server/contracts"
 )
 
-type mock struct{}
+type mock struct {
+	handler contracts.CmdHandler
+}
 
-func (m *mock) AddHandler(h contracts.CmdHandler) {
+func (m *mock) addHandler(h contracts.CmdHandler) {
 	// TODO
-	h.Handle("3 :thumbsup:")
+	m.handler = h
+	m.handler.Handle("3 :thumbsup:")
 }
 
-func CreateMock() contracts.CmdProducer {
+func CreateMock(h contracts.CmdHandler) contracts.CmdServer {
 	fmt.Println("mock factory fn")
-	return &mock{}
+	m := mock{}
+	m.addHandler(h)
+	return m
 }
+
+// TODO factory fn:
+//func Create

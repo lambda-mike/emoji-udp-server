@@ -22,9 +22,8 @@ func main() {
 	fmt.Println("Welcome to Emoji UDP Server!")
 	log.Println("INFO: Config: ", conf)
 
-	// TODO use real UDP server as CmdProducer
-	mockServer := server.CreateMock()
+	// TODO use real UDP server as CmdServer
 	mockHandler := service.CreateMock()
-	mockServer.AddHandler(mockHandler)
+	mockServer := server.CreateMock(mockHandler)
 	log.Println("INFO: server: ", mockServer)
 }
