@@ -17,7 +17,7 @@ type multiplier struct {
 }
 
 func (p *multiplier) Transform(cmd contracts.Cmd) contracts.Cmd {
-	// TODO
+	cmd.N *= p.n
 	return cmd
 }
 
