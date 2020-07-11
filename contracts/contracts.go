@@ -25,3 +25,7 @@ type CmdTransformer interface {
 type CmdResponseBuilder interface {
 	Build(cmd Cmd) (string, error)
 }
+
+type UIResponder interface {
+	Respond(cmd string)
+}
