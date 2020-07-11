@@ -26,3 +26,19 @@ func Create(
 	es.ui = ui
 	return &es
 }
+
+type ResponseBuilder struct{}
+
+func (p *ResponseBuilder) Build(cmd contracts.Cmd) (string, error) {
+	// TODO
+	return "TODO", nil
+}
+
+func CreateResponseBuilder(
+	separator string,
+	t contracts.CmdTransformer,
+) contracts.ResponseBuilder {
+	// TODO
+	log.Println("INFO cmd.CreateResponseBuilder")
+	return nil
+}

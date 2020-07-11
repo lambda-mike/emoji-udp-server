@@ -91,19 +91,3 @@ func CreateTranslator(raw bool) contracts.CmdTransformer {
 		return CreateMemoryTableTranslator()
 	}
 }
-
-type ResponseBuilder struct{}
-
-func (p *ResponseBuilder) Build(cmd contracts.Cmd) (string, error) {
-	// TODO
-	return "TODO", nil
-}
-
-func CreateResponseBuilder(
-	separator string,
-	t contracts.CmdTransformer,
-) contracts.CmdResponseBuilder {
-	// TODO
-	log.Println("INFO cmd.CreateResponseBuilder")
-	return nil
-}

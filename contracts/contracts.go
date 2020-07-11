@@ -22,7 +22,7 @@ type CmdTransformer interface {
 	// TODO Chain
 }
 
-type CmdResponseBuilder interface {
+type ResponseBuilder interface {
 	Build(cmd Cmd) (string, error)
 }
 
