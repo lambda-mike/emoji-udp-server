@@ -51,26 +51,54 @@ func TestMultiplier(t *testing.T) {
 	}
 }
 
-func TestCreateTranslator(t *testing.T) {
-	t.Log("CreateTranslator")
+func TestIdentityTranslator(t *testing.T) {
+	t.Log("IdentityTranslatort")
 	{
-		t.Log("Given boolean flag with false value")
+		t.Log("Given identity Translator and correct Cmd object")
 		{
-			raw := false
-			sut := CreateTranslator(raw)
-			if _, ok := sut.(*memoryTableTranslator); !ok {
-				t.Fatalf("It should return correct type of translator: memoryTableTranslator, got sth else")
+			sut := IdentityTranslator{}
+			cmd := contracts.Cmd{7, ":myemoji:"}
+			res := sut.Transform(cmd)
+			if res.N != cmd.N {
+				t.Fatalf("It should not modify cmd N: %d, got: %d", cmd.N, res.N)
 			}
-			t.Log("It should return correct type of translator (memoryTableTranslator)")
+			t.Log("It should not modify cmd N")
+			if res.Emoji != cmd.Emoji {
+				t.Fatalf("It should not modify cmd Emoji: %v, to: %v", cmd.Emoji, res.Emoji)
+			}
+			t.Log("It should not modify cmd Emoji")
 		}
-		t.Log("Given boolean flag with true value")
+	}
+}
+
+func TestMemoryTableTranslator(t *testing.T) {
+	t.Log("MemoryTableTranslator")
+	{
+		t.Log("Given memoryTableTranslator and correct Cmd object")
 		{
-			raw := true
-			sut := CreateTranslator(raw)
-			if _, ok := sut.(*IdentityTranslator); !ok {
-				t.Fatalf("It should return correct type of translator: IdentityTranslator, got sth else")
+			sut := CreateMemoryTableTranslator()
+			cmd := contracts.Cmd{7, ":ok:"}
+			res := sut.Transform(cmd)
+			okh := "👌"
+			if res.N != cmd.N {
+				t.Fatalf("It should not modify cmd N: %d, got: %d", cmd.N, res.N)
 			}
-			t.Log("It should return correct type of translator (IdentityTranslator)")
+			t.Log("It should not modify cmd N")
+			if res.Emoji != okh {
+				t.Fatalf("It should return changed Emoji: %v, got: %v", okh, res.Emoji)
+			}
+			t.Log("It should return changed Emoji")
+		}
+		t.Log("Given memoryTableTranslator and Cmd object with uknown Emoji")
+		{
+			sut := CreateMemoryTableTranslator()
+			cmd := contracts.Cmd{7, ":unknown:"}
+			res := sut.Transform(cmd)
+			if res.N != cmd.N {
+				t.Fatalf("It should not modify cmd N: %d, got: %d", cmd.N, res.N)
+			}
+			t.Log("It should not modify cmd N")
+			t.Fatalf("TODO It should return err instead of cmd")
 		}
 	}
 }

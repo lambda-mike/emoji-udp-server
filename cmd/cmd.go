@@ -34,12 +34,28 @@ func (p *IdentityTranslator) Transform(cmd contracts.Cmd) contracts.Cmd {
 	return cmd
 }
 
-// TODO add lookup table
-type memoryTableTranslator struct{}
+type memoryTableTranslator struct {
+	table map[string]string
+}
 
 func (m *memoryTableTranslator) Transform(cmd contracts.Cmd) contracts.Cmd {
-	// TODO
+	emoji, err := m.table[cmd.Emoji]
+	if !err {
+		log.Panicln("TODO handle bad emoji!")
+	}
+	cmd.Emoji = emoji
 	return cmd
+}
+
+func CreateMemoryTableTranslator() *memoryTableTranslator {
+	m := memoryTableTranslator{}
+	m.table = map[string]string{
+		":thumbsup:":   "👍",
+		":thumbsdown:": "👎",
+		":ok:":         "👌",
+		":crossed:":    "🤞",
+	}
+	return &m
 }
 
 func CreateTranslator(raw bool) contracts.CmdTransformer {
@@ -47,7 +63,7 @@ func CreateTranslator(raw bool) contracts.CmdTransformer {
 	if raw {
 		return &IdentityTranslator{}
 	} else {
-		return &memoryTableTranslator{}
+		return CreateMemoryTableTranslator()
 	}
 }
 
