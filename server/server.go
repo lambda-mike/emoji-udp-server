@@ -28,7 +28,7 @@ func (m *mock) Listen(port int) {
 }
 
 func CreateMock(h contracts.CmdHandler) contracts.CmdServer {
-	fmt.Println("mock factory fn")
+	fmt.Println("CreateMock")
 	m := mock{}
 	m.addHandler(h)
 	return &m
