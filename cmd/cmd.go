@@ -34,8 +34,19 @@ func (p *IdentityTranslator) Transform(cmd contracts.Cmd) contracts.Cmd {
 	return cmd
 }
 
-// TODO
-// MemoryTableTranslator
+// TODO add lookup table
+type memoryTableTranslator struct{}
+
+func (m *memoryTableTranslator) Transform(cmd contracts.Cmd) contracts.Cmd {
+	// TODO
+	return cmd
+}
+
+func CreateTranslator(raw bool) contracts.CmdTransformer {
+	log.Println("INFO cmd.CreateTranslator")
+	// TODO
+	return &IdentityTranslator{}
+}
 
 type ResponseBuilder struct{}
 
