@@ -37,6 +37,12 @@ type EmojiConcatenator struct {
 }
 
 func (e *EmojiConcatenator) Build(cmd contracts.Cmd) string {
+	if cmd.Emoji == "" {
+		return ""
+	}
+	if cmd.N < 0 {
+		return ""
+	}
 	emojis := strings.Repeat(cmd.Emoji+e.separator, cmd.N)
 	if cmd.N > 0 {
 		limit := len(emojis) - len(e.separator)
