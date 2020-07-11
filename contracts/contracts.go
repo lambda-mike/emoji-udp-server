@@ -18,7 +18,7 @@ type CmdParser interface {
 }
 
 type CmdTransformer interface {
-	Transform(cmd Cmd) Cmd
+	Transform(cmd Cmd) (Cmd, error)
 	// TODO Chain
 }
 

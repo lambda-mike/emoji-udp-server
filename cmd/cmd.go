@@ -16,9 +16,10 @@ type multiplier struct {
 	n int
 }
 
-func (p *multiplier) Transform(cmd contracts.Cmd) contracts.Cmd {
+func (p *multiplier) Transform(cmd contracts.Cmd) (contracts.Cmd, error) {
+	// TODO what if integer overflows?
 	cmd.N *= p.n
-	return cmd
+	return cmd, nil
 }
 
 func CreateMultiplier(n int) contracts.CmdTransformer {
@@ -30,21 +31,23 @@ func CreateMultiplier(n int) contracts.CmdTransformer {
 
 type IdentityTranslator struct{}
 
-func (p *IdentityTranslator) Transform(cmd contracts.Cmd) contracts.Cmd {
-	return cmd
+func (p *IdentityTranslator) Transform(cmd contracts.Cmd) (contracts.Cmd, error) {
+	return cmd, nil
 }
 
 type memoryTableTranslator struct {
 	table map[string]string
 }
 
-func (m *memoryTableTranslator) Transform(cmd contracts.Cmd) contracts.Cmd {
-	emoji, err := m.table[cmd.Emoji]
-	if !err {
-		log.Panicln("TODO handle bad emoji!")
+func (m *memoryTableTranslator) Transform(cmd contracts.Cmd) (contracts.Cmd, error) {
+	emoji, ok := m.table[cmd.Emoji]
+	if !ok {
+		msg := "Could not translate emoji: " + cmd.Emoji
+		log.Println("WARN", msg)
+		return cmd, errors.New(msg)
 	}
 	cmd.Emoji = emoji
-	return cmd
+	return cmd, nil
 }
 
 func CreateMemoryTableTranslator() *memoryTableTranslator {

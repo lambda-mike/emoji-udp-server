@@ -37,8 +37,12 @@ func TestMultiplier(t *testing.T) {
 			n := 3
 			sut := CreateMultiplier(n)
 			cmd := contracts.Cmd{7, ":myemoji:"}
-			res := sut.Transform(cmd)
 			exp := cmd.N * n
+			res, err := sut.Transform(cmd)
+			if err != nil {
+				t.Fatalf("It should not return err, got: %v", err)
+			}
+			t.Log("It should not return error")
 			if res.N != exp {
 				t.Fatalf("It should return cmd with properly modified N: %d, got: %d", exp, res.N)
 			}
@@ -58,7 +62,11 @@ func TestIdentityTranslator(t *testing.T) {
 		{
 			sut := IdentityTranslator{}
 			cmd := contracts.Cmd{7, ":myemoji:"}
-			res := sut.Transform(cmd)
+			res, err := sut.Transform(cmd)
+			if err != nil {
+				t.Fatalf("It should not return err, got: %v", err)
+			}
+			t.Log("It should not return error")
 			if res.N != cmd.N {
 				t.Fatalf("It should not modify cmd N: %d, got: %d", cmd.N, res.N)
 			}
@@ -78,7 +86,11 @@ func TestMemoryTableTranslator(t *testing.T) {
 		{
 			sut := CreateMemoryTableTranslator()
 			cmd := contracts.Cmd{7, ":ok:"}
-			res := sut.Transform(cmd)
+			res, err := sut.Transform(cmd)
+			if err != nil {
+				t.Fatalf("It should not return err, got: %v", err)
+			}
+			t.Log("It should not return error")
 			okh := "👌"
 			if res.N != cmd.N {
 				t.Fatalf("It should not modify cmd N: %d, got: %d", cmd.N, res.N)
@@ -93,12 +105,19 @@ func TestMemoryTableTranslator(t *testing.T) {
 		{
 			sut := CreateMemoryTableTranslator()
 			cmd := contracts.Cmd{7, ":unknown:"}
-			res := sut.Transform(cmd)
+			res, err := sut.Transform(cmd)
+			if err == nil {
+				t.Fatalf("It should return err, got: nil")
+			}
+			t.Log("It should return error", err)
 			if res.N != cmd.N {
 				t.Fatalf("It should not modify cmd N: %d, got: %d", cmd.N, res.N)
 			}
 			t.Log("It should not modify cmd N")
-			t.Fatalf("TODO It should return err instead of cmd")
+			if res.Emoji != cmd.Emoji {
+				t.Fatalf("It should not modify cmd Emoji: %v, to: %v", cmd.Emoji, res.Emoji)
+			}
+			t.Log("It should not modify cmd Emoji")
 		}
 	}
 }
