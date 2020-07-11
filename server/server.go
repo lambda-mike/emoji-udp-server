@@ -2,8 +2,8 @@ package server
 
 import (
 	"bufio"
-	"fmt"
 	"github.com/emoji-udp-server/contracts"
+	"log"
 	"os"
 )
 
@@ -12,17 +12,17 @@ type UDPServer struct {
 }
 
 func (m *UDPServer) Listen(port int) {
-	fmt.Println("Mock server pretending to listen on port", port)
+	log.Println("INFO Mock server pretending to listen on port", port)
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		cmd := scanner.Text()
-		fmt.Println("Scanned:", cmd)
+		log.Println("INFO Scanned:", cmd)
 		m.handler.Handle(cmd)
 	}
 }
 
 func CreateUDPServer(h contracts.CmdHandler) contracts.CmdServer {
-	fmt.Println("CreateUDPServer")
+	log.Println("INFO CreateUDPServer")
 	serv := UDPServer{}
 	serv.handler = h
 	return &serv

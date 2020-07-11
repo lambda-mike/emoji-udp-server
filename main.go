@@ -25,7 +25,7 @@ func main() {
 	port := 54321
 	// TODO use real UDP server as CmdServer
 	ui := screen.Create()
-	mockCmdService := service.Create(ui)
-	udpServer := server.CreateUDPServer(mockCmdService)
+	emojiService := service.Create(ui)
+	udpServer := server.CreateUDPServer(emojiService)
 	udpServer.Listen(port)
 }

@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"github.com/emoji-udp-server/contracts"
+	"log"
 )
 
 type Parser struct{}
@@ -34,10 +35,11 @@ func (p *ResponseBuilder) Build(cmd contracts.Cmd) (string, error) {
 	return "TODO", nil
 }
 
-func Create(
+func CreateResponseBuilder(
 	separator string,
 	t contracts.CmdTransformer,
 ) contracts.CmdResponseBuilder {
 	// TODO
+	log.Println("cmd.CreateResponseBuilder")
 	return nil
 }
