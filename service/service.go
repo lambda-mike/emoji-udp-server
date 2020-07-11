@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/emoji-udp-server/config"
 	"github.com/emoji-udp-server/contracts"
 	"log"
 )
@@ -20,6 +21,7 @@ func (es *EmojiService) Handle(cmd string) {
 
 func Create(
 	ui contracts.UI,
+	cfg config.Config,
 ) contracts.CmdHandler {
 	log.Println("INFO service.Create")
 	es := EmojiService{}
@@ -27,18 +29,15 @@ func Create(
 	return &es
 }
 
-type ResponseBuilder struct{}
+type EmojiConcatenator struct{}
 
-func (p *ResponseBuilder) Build(cmd contracts.Cmd) (string, error) {
+func (e *EmojiConcatenator) Build(cmd contracts.Cmd) (string, error) {
 	// TODO
 	return "TODO", nil
 }
 
-func CreateResponseBuilder(
-	separator string,
-	t contracts.CmdTransformer,
-) contracts.ResponseBuilder {
+func CreateResponseBuilder(separator string) contracts.ResponseBuilder {
 	// TODO
 	log.Println("INFO cmd.CreateResponseBuilder")
-	return nil
+	return &EmojiConcatenator{}
 }
