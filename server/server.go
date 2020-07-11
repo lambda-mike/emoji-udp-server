@@ -7,17 +7,11 @@ import (
 	"os"
 )
 
-type mock struct {
+type UDPServer struct {
 	handler contracts.CmdHandler
 }
 
-func (m *mock) addHandler(h contracts.CmdHandler) {
-	// TODO
-	m.handler = h
-	m.handler.Handle("3 :thumbsup:")
-}
-
-func (m *mock) Listen(port int) {
+func (m *UDPServer) Listen(port int) {
 	fmt.Println("Mock server pretending to listen on port", port)
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
@@ -27,12 +21,9 @@ func (m *mock) Listen(port int) {
 	}
 }
 
-func CreateMock(h contracts.CmdHandler) contracts.CmdServer {
-	fmt.Println("CreateMock")
-	m := mock{}
-	m.addHandler(h)
-	return &m
+func CreateUDPServer(h contracts.CmdHandler) contracts.CmdServer {
+	fmt.Println("CreateUDPServer")
+	serv := UDPServer{}
+	serv.handler = h
+	return &serv
 }
-
-// TODO factory fn:
-//func Create

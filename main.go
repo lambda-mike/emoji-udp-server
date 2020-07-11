@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"github.com/emoji-udp-server/config"
 	"github.com/emoji-udp-server/server"
 	"github.com/emoji-udp-server/service"
@@ -10,8 +9,6 @@ import (
 )
 
 func main() {
-	// TODO replace fmt with proper abstraction (UIService)
-	fmt.Println("Welcome to Emoji UDP Server!")
 	isRaw := flag.Bool("r", false, "disable the translation from keyword to emoji")
 	n := flag.Int("n", 1, "cmd input number multiplier")
 	sep := flag.String("s", "", "emojis separator")
@@ -19,14 +16,14 @@ func main() {
 	flag.Parse()
 	conf, err := config.Create(*isRaw, *n, *sep)
 	if err != nil {
-		log.Panicln("ERR: Could not create Config struct from command-line arguments, got error: ", err)
+		log.Panicln("ERR Could not create Config struct from command-line arguments, got error: ", err)
 	}
-	log.Println("INFO: Config: ", conf)
+	// TODO remove
+	log.Println("INFO Config: ", conf)
 	// TODO get port from env var
 	port := 54321
 	// TODO use real UDP server as CmdServer
 	mockCmdService := service.CreateMock()
-	mockServer := server.CreateMock(mockCmdService)
-	log.Println("INFO: server: ", mockServer)
-	mockServer.Listen(port)
+	udpServer := server.CreateUDPServer(mockCmdService)
+	udpServer.Listen(port)
 }
