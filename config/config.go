@@ -1,5 +1,10 @@
 package config
 
+import (
+	"errors"
+	"strconv"
+)
+
 type Config struct {
 	N         int
 	Separator string
@@ -7,7 +12,9 @@ type Config struct {
 }
 
 func Create(isRaw bool, n int, sep string) (Config, error) {
-	// TODO validate params, return error if needed
-	// n needs to be >= 0
+	if n < 0 {
+		msg := "n must be positive, got: " + strconv.Itoa(n)
+		return Config{}, errors.New(msg)
+	}
 	return Config{n, sep, isRaw}, nil
 }

@@ -28,5 +28,16 @@ func TestCreate(t *testing.T) {
 			}
 			t.Log("It should return config with correct Separator value")
 		}
+		t.Log("Given negative n")
+		{
+			isRaw := true
+			n := -3
+			sep := ","
+			_, err := Create(isRaw, n, sep)
+			if err == nil {
+				t.Fatal("It should return err, got: nil")
+			}
+			t.Log("It should return err", err)
+		}
 	}
 }
