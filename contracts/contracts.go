@@ -14,7 +14,7 @@ type CmdServer interface {
 }
 
 type CmdParser interface {
-	Parse(cmd string) (Cmd, error)
+	Parse(rawCmd string) (Cmd, error)
 }
 
 type CmdTransformer interface {

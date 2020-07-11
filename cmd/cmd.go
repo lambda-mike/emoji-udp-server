@@ -2,14 +2,32 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"github.com/emoji-udp-server/contracts"
 	"log"
 )
 
 type parser struct{}
 
-func (p *parser) Parse(cmd string) (contracts.Cmd, error) {
-	return contracts.Cmd{}, errors.New("TODO Parse Cmd")
+func (p *parser) Parse(rawCmd string) (contracts.Cmd, error) {
+	var (
+		n     int
+		emoji string
+	)
+	_, err := fmt.Sscanf(rawCmd, "%d %s", &n, &emoji)
+	cmd := contracts.Cmd{}
+	if err != nil {
+		log.Println("WARN Parse error", err)
+		return cmd, err
+	}
+	if n < 0 {
+		err = errors.New("n must be positive")
+		log.Println("WARN Parse error", err)
+		return cmd, err
+	}
+	cmd.N = n
+	cmd.Emoji = emoji
+	return cmd, nil
 }
 
 func CreateParser() contracts.CmdParser {
