@@ -1,9 +1,12 @@
 package service
 
 import (
+	"errors"
+	"fmt"
 	"github.com/emoji-udp-server/config"
 	"github.com/emoji-udp-server/contracts"
 	"log"
+	"strings"
 )
 
 type EmojiService struct {
@@ -29,15 +32,27 @@ func Create(
 	return &es
 }
 
-type EmojiConcatenator struct{}
-
-func (e *EmojiConcatenator) Build(cmd contracts.Cmd) (string, error) {
-	// TODO
-	return "TODO", nil
+type EmojiConcatenator struct {
+	separator string
 }
 
-func CreateResponseBuilder(separator string) contracts.ResponseBuilder {
-	// TODO
+func (e *EmojiConcatenator) Build(cmd contracts.Cmd) string {
+	emojis := strings.Repeat(cmd.Emoji+e.separator, cmd.N)
+	if cmd.N > 0 {
+		limit := len(emojis) - len(e.separator)
+		emojis = emojis[:limit]
+	}
+	return emojis
+}
+
+func CreateResponseBuilder(s string) contracts.ResponseBuilder {
 	log.Println("INFO cmd.CreateResponseBuilder")
-	return &EmojiConcatenator{}
+	ec := EmojiConcatenator{}
+	ec.separator = s
+	return &ec
+}
+
+func UnknownCmdErr(cmd string) error {
+	msg := fmt.Sprintf("Unknown command: {%s}", cmd)
+	return errors.New(msg)
 }

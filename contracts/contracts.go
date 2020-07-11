@@ -19,11 +19,10 @@ type CmdParser interface {
 
 type CmdTransformer interface {
 	Transform(cmd Cmd) (Cmd, error)
-	// TODO Chain
 }
 
 type ResponseBuilder interface {
-	Build(cmd Cmd) (string, error)
+	Build(cmd Cmd) string
 }
 
 type UI interface {
