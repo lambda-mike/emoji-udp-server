@@ -1,9 +1,36 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/emoji-udp-server/contracts"
 	"testing"
 )
+
+func TestParse(t *testing.T) {
+	t.Log("Parse")
+	{
+		t.Log("Given correct cmd string")
+		{
+			emoji := ":ok:"
+			n := 3
+			str := fmt.Sprintf("%d %s", n, emoji)
+			sut := CreateParser()
+			cmd, err := sut.Parse(str)
+			if err != nil {
+				t.Fatal("It should not return error, got: ", err)
+			}
+			t.Log("It should not return error")
+			if cmd.N != n {
+				t.Fatalf("It should return Cmd with correct N: %v, got: %v", n, cmd.N)
+			}
+			t.Log("It should return Cmd with correct N")
+			if cmd.Emoji != emoji {
+				t.Fatalf("It should return Cmd with correct Emoji: %s, got: %s", emoji, cmd.Emoji)
+			}
+			t.Log("It should return Cmd with correct Emoji")
+		}
+	}
+}
 
 func TestCreateTranslator(t *testing.T) {
 	t.Log("CreateTranslator")

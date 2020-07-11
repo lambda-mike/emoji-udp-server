@@ -12,6 +12,10 @@ func (p *parser) Parse(cmd string) (contracts.Cmd, error) {
 	return contracts.Cmd{}, errors.New("TODO Parse Cmd")
 }
 
+func CreateParser() contracts.CmdParser {
+	return &parser{}
+}
+
 type multiplier struct {
 	n int
 }
