@@ -1,19 +1,18 @@
 package server
 
-import "fmt"
-
-type CmdProducer interface {
-	AddHandler(func(cmd string))
-}
+import (
+	"fmt"
+	"github.com/emoji-udp-server/contracts"
+)
 
 type mock struct{}
 
-func (m *mock) AddHandler(h func(cmd string)) {
+func (m *mock) AddHandler(h contracts.CmdHandler) {
 	// TODO
-	h("3 :thumbsup:")
+	h.Handle("3 :thumbsup:")
 }
 
-func CreateMock() CmdProducer {
+func CreateMock() contracts.CmdProducer {
 	fmt.Println("mock factory fn")
 	return &mock{}
 }

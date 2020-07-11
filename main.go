@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/emoji-udp-server/config"
 	"github.com/emoji-udp-server/server"
+	"github.com/emoji-udp-server/service"
 	"log"
 )
 
@@ -12,6 +13,7 @@ func main() {
 	isRaw := flag.Bool("r", false, "disable the translation from keyword to emoji")
 	n := flag.Int("n", 1, "cmd input number multiplier")
 	sep := flag.String("s", "", "emojis separator")
+	// -h param is handled by flag lib itself automatically
 	flag.Parse()
 	conf, err := config.Create(*isRaw, *n, *sep)
 	if err != nil {
@@ -21,10 +23,8 @@ func main() {
 	log.Println("INFO: Config: ", conf)
 
 	// TODO use real UDP server as CmdProducer
-	serv := server.CreateMock()
-	mockHandler := func(in string) {
-		fmt.Println("I am handling received from server: ", in)
-	}
-	serv.AddHandler(mockHandler)
-	log.Println("INFO: server: ", serv)
+	mockServer := server.CreateMock()
+	mockHandler := service.CreateMock()
+	mockServer.AddHandler(mockHandler)
+	log.Println("INFO: server: ", mockServer)
 }
