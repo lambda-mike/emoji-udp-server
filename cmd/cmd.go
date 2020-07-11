@@ -44,8 +44,11 @@ func (m *memoryTableTranslator) Transform(cmd contracts.Cmd) contracts.Cmd {
 
 func CreateTranslator(raw bool) contracts.CmdTransformer {
 	log.Println("INFO cmd.CreateTranslator")
-	// TODO
-	return &IdentityTranslator{}
+	if raw {
+		return &IdentityTranslator{}
+	} else {
+		return &memoryTableTranslator{}
+	}
 }
 
 type ResponseBuilder struct{}

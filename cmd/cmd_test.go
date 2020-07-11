@@ -5,6 +5,30 @@ import (
 	"testing"
 )
 
+func TestCreateTranslator(t *testing.T) {
+	t.Log("CreateTranslator")
+	{
+		t.Log("Given boolean flag with false value")
+		{
+			raw := false
+			sut := CreateTranslator(raw)
+			if _, ok := sut.(*memoryTableTranslator); !ok {
+				t.Fatalf("It should return correct type of translator: memoryTableTranslator, got sth else")
+			}
+			t.Log("It should return correct type of translator (memoryTableTranslator)")
+		}
+		t.Log("Given boolean flag with true value")
+		{
+			raw := true
+			sut := CreateTranslator(raw)
+			if _, ok := sut.(*IdentityTranslator); !ok {
+				t.Fatalf("It should return correct type of translator: IdentityTranslator, got sth else")
+			}
+			t.Log("It should return correct type of translator (IdentityTranslator)")
+		}
+	}
+}
+
 func TestMultiplier(t *testing.T) {
 	t.Log("Multiplier")
 	{
