@@ -26,6 +26,6 @@ type CmdResponseBuilder interface {
 	Build(cmd Cmd) (string, error)
 }
 
-type UIResponder interface {
-	Respond(cmd string)
+type UI interface {
+	Print(cmd string)
 }

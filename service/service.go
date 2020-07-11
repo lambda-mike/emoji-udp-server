@@ -1,17 +1,19 @@
 package service
 
 import (
-	// TODO remove?
-	"fmt"
 	"github.com/emoji-udp-server/contracts"
 )
 
-type mock struct{}
-
-func (m *mock) Handle(cmd string) {
-	fmt.Println("I am Mock service; handling cmd: ", cmd)
+type EmojiService struct {
+	ui contracts.UI
 }
 
-func CreateMock() contracts.CmdHandler {
-	return &mock{}
+func (es *EmojiService) Handle(cmd string) {
+	es.ui.Print("EmojiService handling cmd: " + cmd)
+}
+
+func Create(ui contracts.UI) contracts.CmdHandler {
+	es := EmojiService{}
+	es.ui = ui
+	return &es
 }

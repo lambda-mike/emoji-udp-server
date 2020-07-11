@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/emoji-udp-server/config"
+	"github.com/emoji-udp-server/screen"
 	"github.com/emoji-udp-server/server"
 	"github.com/emoji-udp-server/service"
 	"log"
@@ -23,7 +24,8 @@ func main() {
 	// TODO get port from env var
 	port := 54321
 	// TODO use real UDP server as CmdServer
-	mockCmdService := service.CreateMock()
+	ui := screen.Create()
+	mockCmdService := service.Create(ui)
 	udpServer := server.CreateUDPServer(mockCmdService)
 	udpServer.Listen(port)
 }
