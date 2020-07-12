@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"fmt"
 	"github.com/emoji-udp-server/cmd"
 	"github.com/emoji-udp-server/config"
@@ -14,18 +13,35 @@ type EmojiService struct {
 	ui           contracts.UI
 	parser       contracts.CmdParser
 	transformers []contracts.CmdTransformer
+	respBuilder  contracts.ResponseBuilder
 }
 
 func (es *EmojiService) Handle(req string) {
 	log.Println("INFO EmojiService handling cmd:", req)
 	command, err := es.parseRequest(req)
+	if err != nil {
+		es.handleErr(req, err)
+		return
+	}
 	log.Println("INFO cmd", command, "err", err)
 	log.Println("TODO transform cmd (2 transformers composed)")
 	cmdTran, err := es.transformCmd(command, err)
+	if err != nil {
+		es.handleErr(req, err)
+		return
+	}
 	log.Println("INFO cmd", cmdTran, "err", err)
 	log.Println("TODO build response")
-	log.Println("TODO print response")
-	es.ui.Print(req)
+	resp := es.respBuilder.Build(cmdTran)
+	es.ui.Print(resp)
+}
+
+func (es *EmojiService) handleErr(req string, err error) {
+	log.Println("DBG handleErr", req, err)
+	if err != nil {
+		resp := CreateUnknownCmdMsg(req)
+		es.ui.Print(resp)
+	}
 }
 
 func Create(
@@ -40,6 +56,7 @@ func Create(
 	transformers = append(transformers, cmd.CreateMultiplier(cfg.N))
 	transformers = append(transformers, cmd.CreateTranslator(cfg.Raw))
 	es.transformers = transformers
+	es.respBuilder = CreateResponseBuilder(cfg.Separator)
 	return &es
 }
 
@@ -88,7 +105,6 @@ func CreateResponseBuilder(s string) contracts.ResponseBuilder {
 	return &ec
 }
 
-func UnknownCmdErr(cmd string) error {
-	msg := fmt.Sprintf("Unknown command: {%s}", cmd)
-	return errors.New(msg)
+func CreateUnknownCmdMsg(cmd string) string {
+	return fmt.Sprintf("Unknown command: {%s}", cmd)
 }
