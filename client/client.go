@@ -9,7 +9,9 @@ import (
 )
 
 func main() {
-	udpAddr := net.UDPAddr{IP: []byte{127, 0, 0, 1}, Port: 54321, Zone: ""}
+	//54321
+	port := 54321
+	udpAddr := net.UDPAddr{IP: []byte{127, 0, 0, 1}, Port: port, Zone: ""}
 	conn, err := net.DialUDP("udp", nil /*(laddr)*/, &udpAddr)
 	defer conn.Close()
 	if err != nil {
