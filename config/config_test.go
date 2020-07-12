@@ -80,6 +80,15 @@ func TestParsePort(t *testing.T) {
 			}
 			t.Log("It should return err", err)
 		}
+		t.Log("Given 0 port")
+		{
+			str := "0"
+			_, err := ParsePort(str)
+			if err != nil {
+				t.Fatal("It should not return err, got:", err)
+			}
+			t.Log("It should not return err")
+		}
 		t.Log("Given incorrect port")
 		{
 			str := "nope"

@@ -35,8 +35,8 @@ func ParsePort(str string) (int, error) {
 	}
 	lo := 49152
 	hi := 65535
-	if port < lo || port > hi {
-		msg := fmt.Sprintf("Port should be between %d-%d, got:%d", lo, hi, port)
+	if port != 0 && (port < lo || port > hi) {
+		msg := fmt.Sprintf("Port should be 0 or between %d-%d, got:%d", lo, hi, port)
 		return 0, errors.New(msg)
 	}
 	return port, nil
