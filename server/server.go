@@ -28,7 +28,7 @@ func CreateUDPServer(port int, h contracts.CmdHandler) contracts.CmdServer {
 }
 
 func (s *UDPServer) Listen() {
-	log.Println("INFO UDP server is listenning...", s.conn)
+	log.Println("INFO UDP server is listenning...", s.conn.LocalAddr())
 	defer s.conn.Close()
 	// 1KB buffer
 	buf := make([]byte, 1024)
