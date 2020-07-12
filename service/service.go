@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"fmt"
+	"github.com/emoji-udp-server/cmd"
 	"github.com/emoji-udp-server/config"
 	"github.com/emoji-udp-server/contracts"
 	"log"
@@ -10,16 +11,18 @@ import (
 )
 
 type EmojiService struct {
-	ui contracts.UI
+	ui     contracts.UI
+	parser contracts.CmdParser
 }
 
-func (es *EmojiService) Handle(cmd string) {
-	log.Println("INFO EmojiService handling cmd:", cmd)
-	log.Println("TODO parse cmd")
+func (es *EmojiService) Handle(req string) {
+	log.Println("INFO EmojiService handling cmd:", req)
+	command, err := es.parseRequest(req)
+	log.Println("INFO cmd", command, "err", err)
 	log.Println("TODO transform cmd (2 transformers composed)")
 	log.Println("TODO build response")
 	log.Println("TODO print response")
-	es.ui.Print(cmd)
+	es.ui.Print(req)
 }
 
 func Create(
@@ -29,7 +32,12 @@ func Create(
 	log.Println("INFO service.Create")
 	es := EmojiService{}
 	es.ui = ui
+	es.parser = cmd.CreateParser()
 	return &es
+}
+
+func (es *EmojiService) parseRequest(req string) (contracts.Cmd, error) {
+	return es.parser.Parse(req)
 }
 
 type EmojiConcatenator struct {
