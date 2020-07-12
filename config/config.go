@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
@@ -39,4 +40,13 @@ func ParsePort(str string) (int, error) {
 		return 0, errors.New(msg)
 	}
 	return port, nil
+}
+
+func ParseCmdLineFlags() (Config, error) {
+	// -h param is handled by the flag lib automatically
+	isRaw := flag.Bool("r", false, "disable the translation from keyword to emoji")
+	n := flag.Int("n", 1, "cmd input number multiplier")
+	sep := flag.String("s", "", "emojis separator")
+	flag.Parse()
+	return Create(*isRaw, *n, *sep)
 }
