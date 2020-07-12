@@ -60,5 +60,34 @@ func TestParsePort(t *testing.T) {
 			}
 			t.Log("It should return valid port", expected)
 		}
+		t.Log("Given too small port")
+		{
+			// 49152–65535
+			str := "49151"
+			port, err := ParsePort(str)
+			if err == nil {
+				t.Fatal("It should return err, got nil")
+			}
+			t.Log("It should return err", err)
+		}
+		t.Log("Given too big port")
+		{
+			// 49152–65535
+			str := "65536"
+			port, err := ParsePort(str)
+			if err == nil {
+				t.Fatal("It should return err, got nil")
+			}
+			t.Log("It should return err", err)
+		}
+		t.Log("Given incorrect port")
+		{
+			str := "nope"
+			port, err := ParsePort(str)
+			if err == nil {
+				t.Fatal("It should return err, got nil")
+			}
+			t.Log("It should return err", err)
+		}
 	}
 }

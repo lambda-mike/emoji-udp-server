@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 )
 
@@ -19,7 +20,17 @@ func Create(isRaw bool, n int, sep string) (Config, error) {
 	return Config{n, sep, isRaw}, nil
 }
 
-func ParsePort(port string) (int, error) {
+func ParsePort(str string) (int, error) {
 	// TODO parse port
-	return 0, errors.New("Error parsing port: " + port)
+	port, err := strconv.Atoi(str)
+	if err != nil {
+		return 0, err
+	}
+	lo := 49152
+	hi := 65535
+	if port < lo || port > hi {
+		msg := fmt.Sprintf("Port should be between %d-%d, got:%d", lo, hi, port)
+		return 0, errors.New(msg)
+	}
+	return port, nil
 }
