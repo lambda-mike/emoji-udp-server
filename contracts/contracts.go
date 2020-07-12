@@ -10,7 +10,7 @@ type CmdHandler interface {
 }
 
 type CmdServer interface {
-	Listen(port int)
+	Listen()
 }
 
 type CmdParser interface {

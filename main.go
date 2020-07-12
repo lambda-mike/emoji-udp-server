@@ -20,6 +20,6 @@ func main() {
 	}
 	ui := screen.Create()
 	emojiService := service.Create(ui, conf)
-	udpServer := server.CreateUDPServer(emojiService)
-	udpServer.Listen(port)
+	udpServer := server.CreateUDPServer(port, emojiService)
+	udpServer.Listen()
 }
