@@ -45,7 +45,7 @@ func (p *multiplier) Transform(cmd contracts.Cmd) (contracts.Cmd, error) {
 }
 
 func CreateMultiplier(n int) contracts.CmdTransformer {
-	log.Println("INFO cmd.CreateResponseBuilder")
+	log.Println("INFO cmd.CreateMultiplier")
 	m := multiplier{}
 	m.n = n
 	return &m
