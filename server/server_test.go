@@ -20,11 +20,10 @@ func TestListen(t *testing.T) {
 		{
 			t.Log("When called with some msg")
 			{
-				port := 57777
 				msg := "testing message"
 				handler := mockHandler{}
 				handler.state = make(chan string)
-				sut := CreateUDPServer(port, &handler)
+				sut, port := CreateUDPServer(0, &handler)
 				go sut.Listen()
 
 				udpAddr := net.UDPAddr{IP: []byte{127, 0, 0, 1}, Port: port, Zone: ""}
@@ -33,6 +32,7 @@ func TestListen(t *testing.T) {
 				if err != nil {
 					t.Fatal("Could not establish connection to server", err)
 				}
+				t.Log("Established connection with local server at port:", port)
 				conn.Write([]byte(msg))
 				state := <-handler.state
 				if state != msg {

@@ -6,6 +6,8 @@ import (
 	"log"
 	"net"
 	"os"
+	"strconv"
+	"strings"
 )
 
 type UDPServer struct {
@@ -13,7 +15,7 @@ type UDPServer struct {
 	handler contracts.CmdHandler
 }
 
-func CreateUDPServer(port int, h contracts.CmdHandler) contracts.CmdServer {
+func CreateUDPServer(port int, h contracts.CmdHandler) (contracts.CmdServer, int) {
 	log.Println("INFO CreateUDPServer")
 	udpAddr := net.UDPAddr{IP: []byte{0, 0, 0, 0}, Port: port, Zone: ""}
 	log.Println("INFO udpAddr:", udpAddr)
@@ -24,11 +26,27 @@ func CreateUDPServer(port int, h contracts.CmdHandler) contracts.CmdServer {
 	}
 	serv.conn = conn
 	serv.handler = h
-	return &serv
+	if port == 0 {
+		port = extractPortFromAddr(conn.LocalAddr().String())
+	}
+	return &serv, port
+}
+
+func extractPortFromAddr(addr string) int {
+	chunks := strings.Split(addr, ":")
+	if len(chunks) < 1 {
+		log.Panicln("Could not extract port number from empty addr:", addr)
+	}
+	ipstr := chunks[len(chunks)-1]
+	ip, err := strconv.Atoi(ipstr)
+	if err != nil {
+		log.Panicln("Could not parse port number from:", ipstr)
+	}
+	return ip
 }
 
 func (s *UDPServer) Listen() {
-	log.Println("INFO UDP server is listenning...", s.conn.LocalAddr())
+	log.Println("INFO UDP server is listenning on:", s.conn.LocalAddr())
 	defer s.conn.Close()
 	// 1KB buffer
 	buf := make([]byte, 1024)
