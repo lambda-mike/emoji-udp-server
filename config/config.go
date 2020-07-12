@@ -18,3 +18,8 @@ func Create(isRaw bool, n int, sep string) (Config, error) {
 	}
 	return Config{n, sep, isRaw}, nil
 }
+
+func ParsePort(port string) (int, error) {
+	// TODO parse port
+	return 0, errors.New("Error parsing port: " + port)
+}

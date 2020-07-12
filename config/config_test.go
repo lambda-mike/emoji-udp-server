@@ -41,3 +41,24 @@ func TestCreate(t *testing.T) {
 		}
 	}
 }
+
+func TestParsePort(t *testing.T) {
+	t.Log("ParsePort")
+	{
+		t.Log("Given correct port string")
+		{
+			// 49152–65535
+			str := "54321"
+			port, err := ParsePort(str)
+			if err != nil {
+				t.Fatal("It should not return err, got: ", err)
+			}
+			t.Log("It should not return err")
+			expected := 54321
+			if port != expected {
+				t.Fatalf("It should return valid port %d, got: %d", expected, port)
+			}
+			t.Log("It should return valid port", expected)
+		}
+	}
+}
