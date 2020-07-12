@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
+	"os"
 	"strconv"
 )
 
@@ -12,6 +13,8 @@ type Config struct {
 	Raw       bool
 }
 
+const EMOJI_PORT = "EMOJI_PORT"
+
 func Create(isRaw bool, n int, sep string) (Config, error) {
 	if n < 0 {
 		msg := "n must be positive, got: " + strconv.Itoa(n)
@@ -20,8 +23,11 @@ func Create(isRaw bool, n int, sep string) (Config, error) {
 	return Config{n, sep, isRaw}, nil
 }
 
+func ReadPortFromEnv() string {
+	return os.Getenv(EMOJI_PORT)
+}
+
 func ParsePort(str string) (int, error) {
-	// TODO parse port
 	port, err := strconv.Atoi(str)
 	if err != nil {
 		return 0, err

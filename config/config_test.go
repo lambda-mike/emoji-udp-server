@@ -64,7 +64,7 @@ func TestParsePort(t *testing.T) {
 		{
 			// 49152–65535
 			str := "49151"
-			port, err := ParsePort(str)
+			_, err := ParsePort(str)
 			if err == nil {
 				t.Fatal("It should return err, got nil")
 			}
@@ -74,7 +74,7 @@ func TestParsePort(t *testing.T) {
 		{
 			// 49152–65535
 			str := "65536"
-			port, err := ParsePort(str)
+			_, err := ParsePort(str)
 			if err == nil {
 				t.Fatal("It should return err, got nil")
 			}
@@ -83,7 +83,7 @@ func TestParsePort(t *testing.T) {
 		t.Log("Given incorrect port")
 		{
 			str := "nope"
-			port, err := ParsePort(str)
+			_, err := ParsePort(str)
 			if err == nil {
 				t.Fatal("It should return err, got nil")
 			}
