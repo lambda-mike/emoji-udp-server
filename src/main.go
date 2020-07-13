@@ -1,14 +1,18 @@
 package main
 
 import (
+	"bytes"
 	"github.com/emoji-udp-server/config"
 	"github.com/emoji-udp-server/screen"
 	"github.com/emoji-udp-server/server"
 	"github.com/emoji-udp-server/service"
+	"io"
 	"log"
+	"os"
 )
 
 func main() {
+	initLogging()
 	conf := config.ParseCmdLineFlags()
 	log.Println("INFO Config: ", conf)
 	port, err := config.ParsePort(config.ReadPortFromEnv())
@@ -19,4 +23,14 @@ func main() {
 	emojiService := service.Create(ui, conf)
 	udpServer, _ := server.CreateUDPServer(port, emojiService)
 	udpServer.Listen()
+}
+
+func initLogging() {
+	var sink io.Writer
+	sink, err := os.Create("emoji.log")
+	if err != nil {
+		var buf bytes.Buffer
+		log.SetOutput(&buf)
+	}
+	log.SetOutput(sink)
 }
