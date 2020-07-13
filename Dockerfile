@@ -6,4 +6,4 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -o emoji-udp-server .
 FROM scratch
 COPY --from=builder /app/emoji-udp-server /
 ENV EMOJI_PORT 54321
-CMD ["/emoji-udp-server", "-n", "3", "-s", "','"]
+CMD ["/emoji-udp-server", "-n", "3", "-s", ","]
