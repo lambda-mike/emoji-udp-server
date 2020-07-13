@@ -37,6 +37,7 @@ type multiplier struct {
 	n uint
 }
 
+// TODO agree with product team on reasonable max N
 func (p *multiplier) Transform(cmd contracts.Cmd) (contracts.Cmd, error) {
 	// Mutliplication will overflow silently for big numbers
 	// Let's find out the upper bound and error explicitly if that would be the case

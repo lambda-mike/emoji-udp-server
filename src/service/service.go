@@ -35,10 +35,17 @@ func (es *EmojiService) Handle(req string) {
 
 func (es *EmojiService) handleErr(req string, err error) {
 	log.Println("WARN handleErr", req, err)
-	if err != nil {
-		resp := CreateUnknownCmdMsg(req)
-		es.ui.Print(resp)
+	if err == nil {
+		return
 	}
+	if err == cmd.TooBigNumErr {
+		resp :=
+			"N in request: '" + req + "' is too big! It could cause integer overflow!"
+		es.ui.Print(resp)
+		return
+	}
+	resp := CreateUnknownCmdMsg(req)
+	es.ui.Print(resp)
 }
 
 func Create(
