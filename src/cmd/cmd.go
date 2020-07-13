@@ -51,14 +51,9 @@ func CreateMultiplier(n int) contracts.CmdTransformer {
 	return &m
 }
 
-type IdentityTranslator struct{}
-
-func (p *IdentityTranslator) Transform(cmd contracts.Cmd) (contracts.Cmd, error) {
-	return cmd, nil
-}
-
 type memoryTableTranslator struct {
-	table map[string]string
+	table               map[string]string
+	translationDisabled bool
 }
 
 func (m *memoryTableTranslator) Transform(cmd contracts.Cmd) (contracts.Cmd, error) {
@@ -68,12 +63,16 @@ func (m *memoryTableTranslator) Transform(cmd contracts.Cmd) (contracts.Cmd, err
 		log.Println("WARN", msg)
 		return cmd, errors.New(msg)
 	}
-	cmd.Emoji = emoji
+	if !m.translationDisabled {
+		cmd.Emoji = emoji
+	}
 	return cmd, nil
 }
 
-func CreateMemoryTableTranslator() *memoryTableTranslator {
+func CreateTranslator(raw bool) *memoryTableTranslator {
+	log.Println("INFO cmd.CreateTranslator")
 	m := memoryTableTranslator{}
+	m.translationDisabled = raw
 	m.table = map[string]string{
 		":thumbsup:":   "👍",
 		":thumbsdown:": "👎",
@@ -81,13 +80,4 @@ func CreateMemoryTableTranslator() *memoryTableTranslator {
 		":crossed:":    "🤞",
 	}
 	return &m
-}
-
-func CreateTranslator(raw bool) contracts.CmdTransformer {
-	log.Println("INFO cmd.CreateTranslator")
-	if raw {
-		return &IdentityTranslator{}
-	} else {
-		return CreateMemoryTableTranslator()
-	}
 }
