@@ -11,8 +11,8 @@ func TestParse(t *testing.T) {
 	{
 		t.Log("Given correct cmd string")
 		{
+			var n uint = 3
 			emoji := ":ok:"
-			n := 3
 			str := fmt.Sprintf("%d %s", n, emoji)
 			sut := CreateParser()
 			cmd, err := sut.Parse(str)
@@ -37,7 +37,7 @@ func TestMultiplier(t *testing.T) {
 	{
 		t.Log("Given multiplier Transformer and correct Cmd object")
 		{
-			n := 3
+			var n uint = 3
 			sut := CreateMultiplier(n)
 			cmd := contracts.Cmd{7, ":myemoji:"}
 			exp := cmd.N * n

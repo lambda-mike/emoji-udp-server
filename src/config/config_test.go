@@ -7,13 +7,10 @@ func TestCreate(t *testing.T) {
 	{
 		t.Log("Given correct params")
 		{
+			var n uint = 3
 			isRaw := true
-			n := 3
 			sep := ","
-			conf, err := Create(isRaw, n, sep)
-			if err != nil {
-				t.Fatal("It should not return err, got: ", err)
-			}
+			conf := Create(isRaw, n, sep)
 			t.Log("It should not return err")
 			if conf.Raw != isRaw {
 				t.Errorf("It should return config with correct Raw value: %v, got: %v", isRaw, conf.Raw)
@@ -27,17 +24,6 @@ func TestCreate(t *testing.T) {
 				t.Errorf("It should return config with correct Separator value: %v, got: %v", sep, conf.Separator)
 			}
 			t.Log("It should return config with correct Separator value")
-		}
-		t.Log("Given negative n")
-		{
-			isRaw := true
-			n := -3
-			sep := ","
-			_, err := Create(isRaw, n, sep)
-			if err == nil {
-				t.Fatal("It should return err, got: nil")
-			}
-			t.Log("It should return err", err)
 		}
 	}
 }

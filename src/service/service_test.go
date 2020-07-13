@@ -28,8 +28,8 @@ func TestBuild(t *testing.T) {
 		{
 			t.Log("When passed proper cmd with n=0")
 			{
+				var n uint = 0
 				emoji := "👌"
-				n := 0
 				cmd := contracts.Cmd{n, emoji}
 				sep := ","
 				sut := CreateResponseBuilder(sep)
@@ -42,8 +42,8 @@ func TestBuild(t *testing.T) {
 			}
 			t.Log("When passed proper cmd with n=1")
 			{
+				var n uint = 1
 				emoji := "👌"
-				n := 1
 				cmd := contracts.Cmd{n, emoji}
 				sep := ","
 				sut := CreateResponseBuilder(sep)
@@ -56,8 +56,8 @@ func TestBuild(t *testing.T) {
 			}
 			t.Log("When passed proper cmd")
 			{
+				var n uint = 2
 				emoji := "👌"
-				n := 2
 				cmd := contracts.Cmd{n, emoji}
 				sep := ","
 				sut := CreateResponseBuilder(sep)
@@ -70,8 +70,8 @@ func TestBuild(t *testing.T) {
 			}
 			t.Log("When passed proper cmd")
 			{
+				var n uint = 3
 				emoji := "👌"
-				n := 3
 				cmd := contracts.Cmd{n, emoji}
 				sep := ","
 				sut := CreateResponseBuilder(sep)
@@ -84,22 +84,8 @@ func TestBuild(t *testing.T) {
 			}
 			t.Log("When passed proper cmd with empty emoji")
 			{
+				var n uint = 3
 				emoji := ""
-				n := 3
-				cmd := contracts.Cmd{n, emoji}
-				sep := ","
-				sut := CreateResponseBuilder(sep)
-				res := sut.Build(cmd)
-				expected := ""
-				if res != expected {
-					t.Fatalf("It should return correct response: %s, got: %s", expected, res)
-				}
-				t.Log("It should return correct response")
-			}
-			t.Log("When passed incorrect cmd with negative N")
-			{
-				emoji := ":ok:"
-				n := -3
 				cmd := contracts.Cmd{n, emoji}
 				sep := ","
 				sut := CreateResponseBuilder(sep)
@@ -112,8 +98,8 @@ func TestBuild(t *testing.T) {
 			}
 			t.Log("When passed correct cmd without separator")
 			{
+				var n uint = 3
 				emoji := ":ok:"
-				n := 3
 				cmd := contracts.Cmd{n, emoji}
 				sep := ""
 				sut := CreateResponseBuilder(sep)

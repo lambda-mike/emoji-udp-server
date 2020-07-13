@@ -11,17 +11,12 @@ type parser struct{}
 
 func (p *parser) Parse(rawCmd string) (contracts.Cmd, error) {
 	var (
-		n     int
+		n     uint
 		emoji string
 	)
 	_, err := fmt.Sscanf(rawCmd, "%d %s", &n, &emoji)
 	cmd := contracts.Cmd{}
 	if err != nil {
-		log.Println("WARN Parse error", err)
-		return cmd, err
-	}
-	if n < 0 {
-		err = errors.New("n must be positive")
 		log.Println("WARN Parse error", err)
 		return cmd, err
 	}
@@ -35,7 +30,7 @@ func CreateParser() contracts.CmdParser {
 }
 
 type multiplier struct {
-	n int
+	n uint
 }
 
 func (p *multiplier) Transform(cmd contracts.Cmd) (contracts.Cmd, error) {
@@ -44,7 +39,7 @@ func (p *multiplier) Transform(cmd contracts.Cmd) (contracts.Cmd, error) {
 	return cmd, nil
 }
 
-func CreateMultiplier(n int) contracts.CmdTransformer {
+func CreateMultiplier(n uint) contracts.CmdTransformer {
 	log.Println("INFO cmd.CreateMultiplier")
 	m := multiplier{}
 	m.n = n

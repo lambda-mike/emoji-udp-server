@@ -9,19 +9,15 @@ import (
 )
 
 type Config struct {
-	N         int
+	N         uint
 	Separator string
 	Raw       bool
 }
 
 const EMOJI_PORT = "EMOJI_PORT"
 
-func Create(isRaw bool, n int, sep string) (Config, error) {
-	if n < 0 {
-		msg := "n must be positive, got: " + strconv.Itoa(n)
-		return Config{}, errors.New(msg)
-	}
-	return Config{n, sep, isRaw}, nil
+func Create(isRaw bool, n uint, sep string) Config {
+	return Config{n, sep, isRaw}
 }
 
 func ReadPortFromEnv() string {
@@ -42,10 +38,10 @@ func ParsePort(str string) (int, error) {
 	return port, nil
 }
 
-func ParseCmdLineFlags() (Config, error) {
+func ParseCmdLineFlags() Config {
 	// -h param is handled by the flag lib automatically
 	isRaw := flag.Bool("r", false, "disable the translation from keyword to emoji")
-	n := flag.Int("n", 1, "cmd input number multiplier")
+	n := flag.Uint("n", 1, "cmd input number multiplier")
 	sep := flag.String("s", "", "emojis separator")
 	flag.Parse()
 	return Create(*isRaw, *n, *sep)

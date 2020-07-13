@@ -1,7 +1,7 @@
 package contracts
 
 type Cmd struct {
-	N     int
+	N     uint
 	Emoji string
 }
 

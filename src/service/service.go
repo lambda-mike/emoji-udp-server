@@ -6,7 +6,6 @@ import (
 	"github.com/emoji-udp-server/config"
 	"github.com/emoji-udp-server/contracts"
 	"log"
-	"strings"
 )
 
 type EmojiService struct {
@@ -86,9 +85,13 @@ func (e *EmojiConcatenator) Build(cmd contracts.Cmd) string {
 	if cmd.N < 0 {
 		return ""
 	}
-	// emojis will contain extra sep at the end
-	emojis := strings.Repeat(cmd.Emoji+e.separator, cmd.N)
+	emojis := ""
 	if cmd.N > 0 {
+		// emojis will contain extra sep at the end
+		var i uint
+		for i = 0; i < cmd.N; i++ {
+			emojis += cmd.Emoji + e.separator
+		}
 		limit := len(emojis) - len(e.separator)
 		// Remove extra separator at the end
 		emojis = emojis[:limit]
