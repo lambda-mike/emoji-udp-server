@@ -51,3 +51,11 @@ Example commands:
 - `3 :ok:`
 
 - `:metrics:`
+
+### Logs
+
+Logs can be found in the file `emoji.log` in the folder where binary is executed.
+
+To copy logs from the Docker container, run:
+
+`docker cp CONTAINER_ID:/emoji.log ./`
