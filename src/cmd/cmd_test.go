@@ -55,6 +55,43 @@ func TestMultiplier(t *testing.T) {
 			}
 			t.Log("It should not modify cmd Emoji")
 		}
+		t.Log("Given multiplier Transformer with max uint n")
+		{
+			t.Log("When Cmd object has n equal to 1")
+			{
+				var n uint = ^uint(0)
+				sut := CreateMultiplier(n)
+				cmd := contracts.Cmd{1, ":myemoji:"}
+				exp := cmd.N * n
+				res, err := sut.Transform(cmd)
+				if err != nil {
+					t.Fatalf("It should not return err, got: %v", err)
+				}
+				t.Log("It should not return error")
+				if res.N != exp {
+					t.Fatalf("It should return cmd with properly modified N: %d, got: %d", exp, res.N)
+				}
+				t.Log("It should return cmd with properly modified N")
+				if res.Emoji != cmd.Emoji {
+					t.Fatalf("It should not modify cmd Emoji: %v, to: %v", cmd.Emoji, res.Emoji)
+				}
+				t.Log("It should not modify cmd Emoji")
+			}
+			t.Log("When Cmd object has n equal to 2")
+			{
+				var n uint = ^uint(0)
+				sut := CreateMultiplier(n)
+				cmd := contracts.Cmd{2, ":myemoji:"}
+				_, err := sut.Transform(cmd)
+				if err == nil {
+					t.Fatal("It should return err, got: nil")
+				}
+				if err != TooBigNumErr {
+					t.Fatal("It should return correct err, got:", err)
+				}
+				t.Log("It should return correct error", err)
+			}
+		}
 	}
 }
 

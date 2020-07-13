@@ -7,6 +7,10 @@ import (
 	"log"
 )
 
+const MaxUint = ^uint(0)
+
+var TooBigNumErr = errors.New("Given numbers are too big")
+
 type parser struct{}
 
 func (p *parser) Parse(rawCmd string) (contracts.Cmd, error) {
@@ -34,7 +38,12 @@ type multiplier struct {
 }
 
 func (p *multiplier) Transform(cmd contracts.Cmd) (contracts.Cmd, error) {
-	// TODO what if integer overflows?
+	// Mutliplication will overflow silently for big numbers
+	// Let's find out the upper bound and error explicitly if that would be the case
+	limit := MaxUint / p.n
+	if cmd.N > limit {
+		return cmd, TooBigNumErr
+	}
 	cmd.N *= p.n
 	return cmd, nil
 }
