@@ -13,7 +13,7 @@ type MetricsService struct {
 
 func (m *MetricsService) GetReport() string {
 	m.mtx.RLock()
-	template := "Valid inputs: %d\nInvalid inputs: %d\n"
+	template := "Valid inputs: %d\nInvalid inputs: %d"
 	report := fmt.Sprintf(template, m.valid, m.invalid)
 	m.mtx.RUnlock()
 	return report

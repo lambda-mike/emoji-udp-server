@@ -8,15 +8,23 @@ import (
 	"log"
 )
 
+const MetricsCmd string = ":metrics:"
+
 type EmojiService struct {
-	ui           contracts.UI
+	metrics      contracts.MetricsProvider
 	parser       contracts.CmdParser
-	transformers []contracts.CmdTransformer
 	respBuilder  contracts.ResponseBuilder
+	transformers []contracts.CmdTransformer
+	ui           contracts.UI
 }
 
 func (es *EmojiService) Handle(req string) {
 	log.Println("INFO EmojiService handling request:", req)
+	if req == MetricsCmd {
+		resp := es.metrics.GetReport()
+		es.ui.Print(resp)
+		return
+	}
 	command, err := es.parseRequest(req)
 	if err != nil {
 		es.handleErr(req, err)
@@ -31,6 +39,7 @@ func (es *EmojiService) Handle(req string) {
 	log.Println("DBG cmd", cmdTran, "err", err)
 	resp := es.respBuilder.Build(cmdTran)
 	es.ui.Print(resp)
+	es.metrics.IncValid()
 }
 
 func (es *EmojiService) handleErr(req string, err error) {
@@ -38,6 +47,7 @@ func (es *EmojiService) handleErr(req string, err error) {
 	if err == nil {
 		return
 	}
+	es.metrics.IncInvalid()
 	if err == cmd.TooBigNumErr {
 		resp :=
 			"N in request: '" + req + "' is too big! It could cause integer overflow!"
@@ -49,18 +59,20 @@ func (es *EmojiService) handleErr(req string, err error) {
 }
 
 func Create(
-	ui contracts.UI,
 	cfg config.Config,
+	metrics contracts.MetricsProvider,
+	ui contracts.UI,
 ) contracts.CmdHandler {
 	log.Println("INFO service.Create")
 	es := EmojiService{}
-	es.ui = ui
+	es.metrics = metrics
 	es.parser = cmd.CreateParser()
+	es.respBuilder = CreateResponseBuilder(cfg.Separator)
 	transformers := make([]contracts.CmdTransformer, 0, 2)
 	transformers = append(transformers, cmd.CreateMultiplier(cfg.N))
 	transformers = append(transformers, cmd.CreateTranslator(cfg.Raw))
 	es.transformers = transformers
-	es.respBuilder = CreateResponseBuilder(cfg.Separator)
+	es.ui = ui
 	return &es
 }
 

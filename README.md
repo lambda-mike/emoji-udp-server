@@ -36,10 +36,18 @@ Test specific area:
 
 `EMOJI_PORT=54321 ./emoji-udp-server -n 3 -s ','`
 
+### Debug
+
 You can use client e2e testing app located in `src/client/client.go` to test the server manually.
 
-Adjust the port value in the source file if needed - it should match the value set in _Dockerfile_.
+Adjust the port value in the source file if needed - it should match the value set in environment variable.
 
 `go run client/client.go`
 
 Type you cmd and hit enter.
+
+Example commands:
+
+- `3 :ok:`
+
+- `:metrics:`

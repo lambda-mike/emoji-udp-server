@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"github.com/emoji-udp-server/config"
+	"github.com/emoji-udp-server/metrics"
 	"github.com/emoji-udp-server/screen"
 	"github.com/emoji-udp-server/server"
 	"github.com/emoji-udp-server/service"
@@ -19,8 +20,9 @@ func main() {
 	if err != nil {
 		log.Panicln("ERR Did you add", config.EMOJI_PORT, "env var? Got err:", err)
 	}
+	mp := metrics.Create()
 	ui := screen.Create()
-	emojiService := service.Create(ui, conf)
+	emojiService := service.Create(conf, mp, ui)
 	udpServer, _ := server.CreateUDPServer(port, emojiService)
 	udpServer.Listen()
 }

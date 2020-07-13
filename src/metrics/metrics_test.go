@@ -73,7 +73,7 @@ func TestGetReport(t *testing.T) {
 			{
 				sut := Create()
 				report := sut.GetReport()
-				expected := "Valid inputs: 0\nInvalid inputs: 0\n"
+				expected := "Valid inputs: 0\nInvalid inputs: 0"
 				if report != expected {
 					t.Errorf("It should return valid report:\n%q\ngot:\n%q\n", expected, report)
 				} else {
@@ -86,7 +86,7 @@ func TestGetReport(t *testing.T) {
 				sut.valid = 7
 				sut.invalid = 4
 				report := sut.GetReport()
-				expected := "Valid inputs: 7\nInvalid inputs: 4\n"
+				expected := "Valid inputs: 7\nInvalid inputs: 4"
 				if report != expected {
 					t.Errorf("It should return valid report:\n%q\ngot:\n%q\n", expected, report)
 				} else {
