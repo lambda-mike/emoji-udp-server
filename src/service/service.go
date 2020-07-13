@@ -17,21 +17,19 @@ type EmojiService struct {
 }
 
 func (es *EmojiService) Handle(req string) {
-	log.Println("INFO EmojiService handling cmd:", req)
+	log.Println("INFO EmojiService handling request:", req)
 	command, err := es.parseRequest(req)
 	if err != nil {
 		es.handleErr(req, err)
 		return
 	}
 	log.Println("INFO cmd", command, "err", err)
-	log.Println("TODO transform cmd (2 transformers composed)")
 	cmdTran, err := es.transformCmd(command, err)
 	if err != nil {
 		es.handleErr(req, err)
 		return
 	}
 	log.Println("INFO cmd", cmdTran, "err", err)
-	log.Println("TODO build response")
 	resp := es.respBuilder.Build(cmdTran)
 	es.ui.Print(resp)
 }
