@@ -22,19 +22,19 @@ func (es *EmojiService) Handle(req string) {
 		es.handleErr(req, err)
 		return
 	}
-	log.Println("INFO cmd", command, "err", err)
+	log.Println("DBG cmd", command, "err", err)
 	cmdTran, err := es.transformCmd(command, err)
 	if err != nil {
 		es.handleErr(req, err)
 		return
 	}
-	log.Println("INFO cmd", cmdTran, "err", err)
+	log.Println("DBG cmd", cmdTran, "err", err)
 	resp := es.respBuilder.Build(cmdTran)
 	es.ui.Print(resp)
 }
 
 func (es *EmojiService) handleErr(req string, err error) {
-	log.Println("DBG handleErr", req, err)
+	log.Println("WARN handleErr", req, err)
 	if err != nil {
 		resp := CreateUnknownCmdMsg(req)
 		es.ui.Print(resp)
