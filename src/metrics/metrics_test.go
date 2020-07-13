@@ -9,11 +9,12 @@ func TestIncValid(t *testing.T) {
 	{
 		t.Log("Given MetricsService")
 		{
-			for n := 1; n <= 3; n++ {
+			var i, n uint
+			for n = 1; n <= 3; n++ {
 				t.Log("When called", n, "time(s)")
 				{
 					sut := Create()
-					for i := 0; i < n; i++ {
+					for i = 0; i < n; i++ {
 						sut.IncValid()
 					}
 					expected := n
@@ -38,11 +39,12 @@ func TestIncInvalid(t *testing.T) {
 	{
 		t.Log("Given MetricsService")
 		{
-			for n := 1; n <= 3; n++ {
+			var i, n uint
+			for n = 1; n <= 3; n++ {
 				t.Log("When called", n, "time(s)")
 				{
 					sut := Create()
-					for i := 0; i < n; i++ {
+					for i = 0; i < n; i++ {
 						sut.IncInvalid()
 					}
 					expected := n
