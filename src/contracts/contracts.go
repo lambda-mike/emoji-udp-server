@@ -28,3 +28,9 @@ type ResponseBuilder interface {
 type UI interface {
 	Print(cmd string)
 }
+
+type MetricsProvider interface {
+	GetReport() string
+	IncValid()
+	IncInvalid()
+}
