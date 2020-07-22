@@ -1,0 +1,17 @@
+name: "Emoji UDP Server"
+on:
+  push:
+      branches:
+        - master
+
+jobs:
+  build:
+    name: emoji-udp-server
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: cachix/install-nix-action@v10
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - run: |
+        nix-shell -p go --pure --run 'cd src; go test ./...'
